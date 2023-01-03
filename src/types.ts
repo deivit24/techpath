@@ -1,0 +1,43 @@
+export interface ToolItem {
+  /**
+   * value: name of tool
+   */
+  value: string;
+  /**
+   * type: type pf tool,
+   */
+  type: string;
+}
+
+export interface Experience {
+  /**
+   * value: name of tool
+   */
+  value: string;
+  /**
+   * type: type pf tool,
+   */
+  year: number;
+}
+
+export interface ToolValue {
+  /**
+   * value: name of tool
+   */
+  tool: string;
+  /**
+   * years:in string,
+   */
+  years: string;
+}
+
+export interface Tool {
+  /**
+   * value: name of tool
+   */
+  tool: string;
+  /**
+   * type: type pf tool,
+   */
+  years: number;
+}
