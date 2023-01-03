@@ -230,8 +230,7 @@ const EXPERIENCE = [
 ];
 const tools = [...BACKEND, ...FRONTEND, ...DATABASE];
 const items = ref<ToolItem[]>([]);
-let experience = ref<Experience[]>([]);
-experience = EXPERIENCE;
+
 tools.forEach((t) => {
   const obj = {
     value: t.name,
@@ -244,4 +243,4 @@ items.value.sort((a, b) => a.value.localeCompare(b.value));
 
 const TOOLS = [...FRONTEND, ...BACKEND, ...DATABASE];
 
-export { items, TOOLS, experience, EXPERIENCE };
+export { items, TOOLS, EXPERIENCE };

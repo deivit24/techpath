@@ -29,9 +29,9 @@ const calculateFrontend = (tools: Array<Tool>) => {
     }
   }
 
-  const uiScore = uiYears.length > 0 ? getAverage(uiYears) : [0];
-  const langScore = langYears.length > 0 ? getAverage(langYears) : [0];
-  const frameworkScore = frameworkYears.length > 0 ? getAverage(frameworkYears) : [0];
+  const uiScore = uiYears.length > 0 ? getAverage(uiYears) : 0;
+  const langScore = langYears.length > 0 ? getAverage(langYears) : 0;
+  const frameworkScore = frameworkYears.length > 0 ? getAverage(frameworkYears) : 0;
 
   const uiWA = weightedAverageScore(uiScore, UIWEIGHT);
   const langWA = weightedAverageScore(langScore, FRONTENDLANGUAGEWEIGHT);
@@ -55,9 +55,9 @@ const calculateBackend = (tools: Array<Tool>) => {
     }
   }
 
-  const dbScore = dbYears.length > 0 ? getAverage(dbYears) : [0];
-  const langScore = langYears.length > 0 ? getAverage(langYears) : [0];
-  const frameworkScore = frameworkYears.length > 0 ? getAverage(frameworkYears) : [0];
+  const dbScore = dbYears.length > 0 ? getAverage(dbYears) : 0;
+  const langScore = langYears.length > 0 ? getAverage(langYears) : 0;
+  const frameworkScore = frameworkYears.length > 0 ? getAverage(frameworkYears) : 0;
 
   const dbWA = weightedAverageScore(dbScore, DBWEIGHT);
   const langWA = weightedAverageScore(langScore, BACKENDLANGUAGEWEIGHT);
@@ -76,6 +76,12 @@ const calculateFullStack = (frontendScore: number, backendScore: number) => {
   return Math.floor(backendWeight + frontendWeight);
 };
 
-const getAverage = (arr: Array<Number>) => arr.reduce((sum, num) => sum + num, 0) / arr.length;
+const getAverage = (array: number[]): number => {
+  let sum = 0;
+  for (let i = 0; i < array.length; ++i) {
+    sum += array[i];
+  }
+  return sum / array.length;
+};
 
 export { calculateFrontend, calculateBackend, calculateFullStack };
