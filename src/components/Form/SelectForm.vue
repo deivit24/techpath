@@ -17,7 +17,7 @@
     <el-col :span="10">
       <div class="sub-title my-2 ml-9 text-left text-sm">Select years of experience</div>
       <el-select v-model="state2" clearable class="inline-input w-11/12" placeholder="Select years of experience">
-        <el-option v-for="item in experience" :label="item.value" :value="item.year" />
+        <el-option v-for="item in EXPERIENCE" :label="item.value" :value="item.year" />
       </el-select>
     </el-col>
     <el-col class="text-right" :span="4">
@@ -28,7 +28,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { items, experience } from './consts';
+import { items, EXPERIENCE } from '../../utils/consts';
 import { ToolItem } from '@/types';
 
 const emit = defineEmits(['add']);

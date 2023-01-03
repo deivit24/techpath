@@ -46,8 +46,7 @@ axiosInstance.interceptors.response.use(
       ElMessage.error(showCodeMessage(response.status));
       return Promise.reject(response.data);
     }
-    ElMessage.warning('
-    The network connection is abnormal, please try again later!');
+    ElMessage.warning('The network connection is abnormal, please try again later!');
     return Promise.reject(error);
   },
 );
