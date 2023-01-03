@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { TOOLS } from '@/components/Form/consts';
+import { TOOLS } from '@/utils/consts';
 import { Tool } from '@/types';
 
 const dialog = ref(false);
@@ -52,6 +52,7 @@ const addTool = (item: Tool) => {
     tools.value.push(item);
     ElMessage.success({ message: 'Tool successfully added', duration: 3000 });
   }
+  console.log(tools.value);
 };
 const calculate = () => {
   calculateTools.value = tools.value;

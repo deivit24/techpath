@@ -6,6 +6,8 @@
     <p class="text-center mb-5">{{ showJob(backend, 'Backend') }}</p>
     <h1 class="font-serif font-bold mb-2 text-xl text-center">Fullstack Score: {{ fullstack }} Pts</h1>
     <p class="text-center mb-5">{{ showJob(fullstack, 'Fullstack') }}</p>
+    <h1 class="font-serif font-bold mb-2 text-xl text-center">DevOps Score: {{ devops }} Pts</h1>
+    <p class="text-center mb-5">{{ showJob(devops, 'DevOps') }}</p>
     <PolarAreaChart v-bind="polarAreaChartProps" />
     <template #footer>
       <span class="dialog-footer">
@@ -19,7 +21,7 @@
 import { isDark } from '@/utils/dark';
 import { Tool } from '@/types';
 import { onMounted, ref, computed, defineComponent } from 'vue';
-import { calculateFrontend, calculateBackend, calculateFullStack } from './calculations';
+import { calculateFrontend, calculateBackend, calculateFullStack, calculateDevOps } from '../../utils/calculations';
 import { PolarAreaChart, usePolarAreaChart } from 'vue-chart-3';
 import { Chart, ChartOptions, registerables, RadialLinearScale, ArcElement, Tooltip, Legend } from 'chart.js';
 Chart.register(RadialLinearScale, ArcElement, Tooltip, Legend, ...registerables);
@@ -35,17 +37,18 @@ const props = defineProps({
 const frontend = ref(0);
 const backend = ref(0);
 const fullstack = ref(0);
+const devops = ref(0);
 
 const dataValues = computed(() => {
-  return [frontend.value, backend.value, fullstack.value];
+  return [frontend.value, backend.value, fullstack.value, devops.value];
 });
-const dataLables = ref(['Frontend', 'Backend', 'Fullstack']);
+const dataLables = ref(['Frontend', 'Backend', 'Fullstack', 'DevOps']);
 const testData = computed(() => ({
   labels: dataLables.value,
   datasets: [
     {
       data: dataValues.value,
-      backgroundColor: ['#123E6B', '#97B0C4', '#A5C8ED'],
+      backgroundColor: ['#123E6B', '#97B0C4', '#A5C8ED', '53B81B'],
     },
   ],
 }));
@@ -107,9 +110,13 @@ watch(
   (val) => {
     if (val) {
       const temp = props.tools ? props.tools : [];
+      console.log(temp);
+
       const value = calculateFrontend(temp);
       const backendValue = calculateBackend(temp);
+      const devopsValue = calculateDevOps(temp);
 
+      devops.value = Math.floor(devopsValue);
       frontend.value = Math.floor(value);
       backend.value = Math.floor(backendValue);
       fullstack.value = calculateFullStack(frontend.value, backend.value);

@@ -3,10 +3,6 @@ export interface ToolItem {
    * value: name of tool
    */
   value: string;
-  /**
-   * type: type pf tool,
-   */
-  type: string;
 }
 
 export interface Experience {
