@@ -73,7 +73,7 @@ const options = computed<ChartOptions<'polarArea'>>(() => ({
     },
   },
   responsive: true,
-  maintainAspectRatio: true,
+  maintainAspectRatio: false,
   plugins: {
     title: {
       display: true,

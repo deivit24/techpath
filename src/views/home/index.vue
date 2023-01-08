@@ -1,34 +1,35 @@
 <template>
-  <div class="container max-w-3xl mx-auto relative h-1/1 flex flex-col justify-start pt-20">
-    <div class="mb-3 text-center">
-      <h1 class="font-serif font-bold text-4xl mb-5">{{ t('welcome') }}</h1>
-    </div>
-    <div class="text-center text-md">
-      <SelectForm @add="addTool" />
-      <div id="toolCard">
-        <ToolItem v-for="tool in tools" :key="tool.tool" :tool-item="tool" @remove="removeTool" />
-      </div>
-      <el-row v-if="tools.length > 0" class="justify-end mt-5">
-        <el-button type="danger" plain @click="tools = []"> Remove All</el-button>
+  <div class="container max-w-5xl mx-auto relative h-1/1 flex flex-col justify-start">
+    <HomeTitle @scroll="scrollDown" />
+    <div class="h-100vh flex flex-col justify-center" id="toolPage">
+      <div class="text-center text-md">
+        <SelectForm @add="addTool" />
+        <div id="toolCard">
+          <ToolItem v-for="tool in tools" :key="tool.tool" :tool-item="tool" @remove="removeTool" />
+        </div>
+        <el-row v-if="tools.length > 0" class="justify-end mt-5">
+          <el-button type="danger" plain @click="tools = []"> Remove All</el-button>
 
-        <el-button type="primary" class="mr-4" plain @click="calculate"> Calculate Path</el-button>
-      </el-row>
+          <el-button type="primary" class="mr-4" plain @click="calculate"> Calculate Path</el-button>
+        </el-row>
+      </div>
+      <CalculateDialog :dialog="dialog" :tools="calculateTools" title="Career Path" @close="dialog = false" />
+      <el-card id="card" shadow="never" class="mt-10" v-if="tools.length === 0">
+        <h3 class="font-serif font-bold text-gray-400">
+          {{ t('no tools') }}
+        </h3>
+      </el-card>
     </div>
-    <CalculateDialog :dialog="dialog" :tools="calculateTools" title="Career Path" @close="dialog = false" />
-    <el-card id="card" shadow="never" class="mt-10" v-if="tools.length === 0">
-      <h3 class="font-serif font-bold text-gray-400">
-        {{ t('no tools') }}
-      </h3>
-    </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
 import { TOOLS } from '@/utils/consts';
 import { Tool } from '@/types';
+import { ref } from 'vue';
 
 const dialog = ref(false);
-
+const toolPage = ref(null);
 const tools = ref<Tool[]>([]);
 const calculateTools = ref<Tool[]>([]);
 const { t } = useI18n();
@@ -58,6 +59,10 @@ const calculate = () => {
   calculateTools.value = tools.value;
   dialog.value = true;
 };
+
+const scrollDown = () => {
+  document.getElementById('toolPage')?.scrollIntoView({ behavior: 'smooth' });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -71,6 +76,7 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  opacity: 0.9;
 }
 
 #toolCard {

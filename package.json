@@ -19,10 +19,12 @@
     "nprogress": "^0.2.0",
     "pinia": "^2.0.16",
     "prism-theme-vars": "^0.2.4",
+    "tsparticles": "^2.7.1",
     "vue": "^3.2.25",
     "vue-chart-3": "^3.1.8",
     "vue-i18n": "^9.1.9",
-    "vue-router": "^4.1.2"
+    "vue-router": "^4.1.2",
+    "vue3-particles": "^2.7.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.1.0",

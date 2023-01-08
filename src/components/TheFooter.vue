@@ -1,19 +1,19 @@
 <template>
-  <div class="text-center row-auto justify-center w-full fixed bottom-5">
-    <el-tooltip :content="t('home')" placement="top">
+  <div class="row-auto w-full fixed top-5 right-0">
+    <el-tooltip :content="t('home')" placement="bottom">
       <router-link class="icon-btn mx-2" to="/">
         <i-mdi-home-search-outline class="icon-footer" />
       </router-link>
     </el-tooltip>
 
-    <el-tooltip :content="isDark ? t('change light') : t('change dark')" placement="top">
+    <el-tooltip :content="isDark ? t('change light') : t('change dark')" placement="bottom">
       <button class="icon-btn mx-2 !outline-none" @click="toggleDark()">
         <i-ph-cloud-moon-bold v-if="isDark" class="icon-footer" />
         <i-ph-sun-horizon-bold v-else class="icon-footer" />
       </button>
     </el-tooltip>
 
-    <el-tooltip :content="t('change lang')" placement="top">
+    <el-tooltip :content="t('change lang')" placement="bottom">
       <button class="icon-btn mx-2" @click="toggleLocales()">
         <i-la-language class="icon-footer" />
       </button>
