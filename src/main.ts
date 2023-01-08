@@ -4,6 +4,7 @@ import messages from '@intlify/vite-plugin-vue-i18n/messages';
 // vue router
 import router from '@/router/index';
 // pinia
+import Particles from 'vue3-particles';
 import store from '@/store';
 import App from './App.vue';
 
@@ -20,7 +21,8 @@ const i18n = createI18n({
 const app = createApp(App);
 
 app.use(router).use(store);
-
+// @ts-nocheck
+app.use(Particles as any);
 app.use(i18n);
 
 app.mount('#app');

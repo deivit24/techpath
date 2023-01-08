@@ -6,7 +6,8 @@
         v-model="state1"
         :fetch-suggestions="querySearch"
         clearable
-        class="inline-input w-11/12"
+        class="inline-input w-11/12 opacity-80"
+        :class="[isDark ? 'bg-dark-600' : '']"
         placeholder="Please search for tool"
       >
         <template #prefix>
@@ -16,12 +17,20 @@
     </el-col>
     <el-col :span="10">
       <div class="sub-title my-2 ml-9 text-left text-sm">Select years of experience</div>
-      <el-select v-model="state2" clearable class="inline-input w-11/12" placeholder="Select years of experience">
+      <el-select
+        v-model="state2"
+        clearable
+        class="inline-input w-11/12 opacity-80"
+        :class="[isDark ? 'bg-dark-600' : '']"
+        placeholder="Select years of experience"
+      >
         <el-option v-for="item in EXPERIENCE" :label="item.value" :value="item.year" />
       </el-select>
     </el-col>
     <el-col class="text-right" :span="4">
-      <el-button class="icon-btn mt-9 mr-4" @click="handleSubmit"> <i-carbon-add class="mr-2" /> Add Tool </el-button>
+      <el-button class="icon-btn mt-9 mr-4 opacity-80" :color="isDark ? '#1C1C1E' : ''" @click="handleSubmit">
+        <i-carbon-add class="mr-2" /> Add Tool
+      </el-button>
     </el-col>
   </el-row>
 </template>
@@ -30,6 +39,7 @@
 import { onMounted, ref } from 'vue';
 import { items, EXPERIENCE } from '../../utils/consts';
 import { ToolItem } from '@/types';
+import { isDark } from '@/utils/dark';
 
 const emit = defineEmits(['add']);
 const state1 = ref('');
