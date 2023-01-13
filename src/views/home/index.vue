@@ -1,10 +1,10 @@
 <template>
   <div class="container max-w-5xl mx-auto relative h-1/1 flex flex-col justify-start">
     <HomeTitle @scroll="scrollDown" />
-    <div class="h-100vh flex flex-col justify-center" id="toolPage">
-      <div class="text-center text-md">
+    <div class="h-100vh flex flex-col justify-start" id="toolPage">
+      <div class="text-center text-md mt-20">
         <SelectForm @add="addTool" />
-        <div id="toolCard">
+        <div id="toolCard" class="mt-5">
           <ToolItem v-for="tool in tools" :key="tool.tool" :tool-item="tool" @remove="removeTool" />
         </div>
         <el-row v-if="tools.length > 0" class="justify-end mt-5">
