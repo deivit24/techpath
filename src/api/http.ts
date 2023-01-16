@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import showCodeMessage from '@/api/code';
 import { formatJsonToUrlParams, instanceObject } from '@/utils/format';
-
+import { getHeaders } from './headers';
 const BASE_PREFIX = import.meta.env.VITE_API_BASEURL;
 
 // create an instance
@@ -52,7 +52,7 @@ axiosInstance.interceptors.response.use(
 );
 const service = {
   get<T = any>(url: string, data?: object): Promise<T> {
-    return axiosInstance.get(url, { params: data });
+    return axiosInstance.get(url, { params: data, headers: getHeaders() });
   },
 
   post<T = any>(url: string, data?: object): Promise<T> {

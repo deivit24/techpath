@@ -53,7 +53,6 @@ const addTool = (item: Tool) => {
     tools.value.push(item);
     ElMessage.success({ message: 'Tool successfully added', duration: 3000 });
   }
-  console.log(tools.value);
 };
 const calculate = () => {
   calculateTools.value = tools.value;

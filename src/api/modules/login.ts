@@ -1,8 +1,8 @@
 import service from '@/api/http';
 
-const loginApi = {
-
-  postVerification: (params: object) => service.post(`/login`, params),
+const AuthApi = {
+  login: (params: object) => service.post(`/auth/login`, params),
+  refreshToken: (params: object) => service.post(`/auth/refresh-tokens`, params),
 };
 
-export default loginApi;
+export default AuthApi;

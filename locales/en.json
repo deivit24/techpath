@@ -10,5 +10,7 @@
   "based on": "Based On",
   "experience": "Experience",
   "sub title": "We have built and easy to use tool that calculates where you truly are in your software development career path base on the experience you have with programming languages and tools",
-  "no tools": "No tools selected. Start adding tools then click on the calculate button"
+  "no tools": "No tools selected. Start adding tools then click on the calculate button",
+  "login": "Login",
+  "logout": "Logout"
 }

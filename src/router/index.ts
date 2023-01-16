@@ -3,6 +3,7 @@ import NProgress from 'nprogress';
 import exceptionRoutes from '@/router/route.exception';
 import asyncRoutes from '@/router/route.async';
 import commonRoutes from '@/router/route.common';
+import authStore from '@/store/auth';
 
 const routes: Array<RouteRecordRaw> = [
   // Service routing without authentication ex: login
@@ -12,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
   // The exception page must be placed at the end of the route matching rule
   ...exceptionRoutes,
 ];
-
+const ENV = import.meta.env.VITE_ENV;
 const router: Router = createRouter({
   // The new vue-router4 uses history routing mode and base prefix
   history: createWebHistory(import.meta.env.VITE_BASE),
@@ -25,17 +26,31 @@ const router: Router = createRouter({
  * @param {RouteLocationNormalizedLoaded} from  The route the current navigation is leaving
  * @return {*}
  */
-router.beforeEach((to, from) => {
-  console.log('全局路由前置守卫：to,from\n', to, from);
+router.beforeEach(async (to, from, next) => {
+  // console.log('Global routing front guard：to,from\n', to, from);
   // set page title
+
+  const authRoutes = asyncRoutes.map(({ name }) => name);
+  const user = authStore();
+  if (user.getRefreshToken != undefined && ENV == 'DEV') {
+    await user.refreshTokens();
+  }
+  console.log();
+
+  if (!user.getUser && authRoutes.includes(to.name || '')) {
+    next('/login');
+    return;
+  }
+
   document.title = (to.meta.title as string) || import.meta.env.VITE_APP_TITLE;
   if (!NProgress.isStarted()) {
     NProgress.start();
   }
+  next();
 });
 
 router.afterEach((to, from) => {
-  console.log('Global routing back guard：to,from\n', to, from);
+  // console.log('Global routing back guard：to,from\n', to, from);
   NProgress.done();
 });
 

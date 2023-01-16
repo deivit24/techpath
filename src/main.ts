@@ -19,8 +19,8 @@ const i18n = createI18n({
 });
 
 const app = createApp(App);
-
-app.use(router).use(store);
+app.use(store);
+app.use(router);
 // @ts-nocheck
 app.use(Particles as any);
 app.use(i18n);
