@@ -1,33 +1,65 @@
 <template>
-  <div class="row-auto w-full fixed top-5 right-0">
-    <el-tooltip :content="t('home')" placement="bottom">
-      <router-link class="icon-btn mx-2" to="/">
-        <i-mdi-home-search-outline class="icon-footer" />
-      </router-link>
-    </el-tooltip>
-
+  <el-menu
+    default-active="/"
+    style="border-right: none"
+    class="fixed top-0 left-0 h-1/1"
+    :collapse="true"
+    :router="true"
+  >
+    <el-menu-item index="/">
+      <i-carbon:home class="icon-footer" />
+      <template #title>{{ t('home') }}</template>
+    </el-menu-item>
+    <el-menu-item index="/dashboard">
+      <i-carbon:dashboard class="icon-footer" />
+      <template #title>Dashboard</template>
+    </el-menu-item>
+    <el-menu-item v-if="!isAuth" index="/login">
+      <i-carbon:login class="icon-footer" />
+      <template #title>{{ t('login') }}</template>
+    </el-menu-item>
+  </el-menu>
+  <div class="row-auto fixed top-5 right-0">
     <el-tooltip :content="isDark ? t('change light') : t('change dark')" placement="bottom">
       <button class="icon-btn mx-2 !outline-none" @click="toggleDark()">
-        <i-ph-cloud-moon-bold v-if="isDark" class="icon-footer" />
-        <i-ph-sun-horizon-bold v-else class="icon-footer" />
+        <i-carbon:moon v-if="isDark" class="icon-footer" />
+        <i-carbon:sun v-else class="icon-footer" />
       </button>
     </el-tooltip>
 
     <el-tooltip :content="t('change lang')" placement="bottom">
       <button class="icon-btn mx-2" @click="toggleLocales()">
-        <i-la-language class="icon-footer" />
+        <i-carbon:language class="icon-footer" />
+      </button>
+    </el-tooltip>
+    <el-tooltip v-if="isAuth" :content="t('logout')" placement="bottom">
+      <button class="icon-btn mx-2" @click="logout">
+        <i-carbon:exit class="icon-footer" />
       </button>
     </el-tooltip>
   </div>
 </template>
 
 <script setup lang="ts">
+import router from '@/router';
 import { isDark, toggleDark } from '@/utils/dark';
-
+import authStore from '@/store/auth';
+const activeIndex = ref('1');
+const auth = authStore();
+const isAuth = computed(() => {
+  return auth.getUser;
+});
 const { t, availableLocales, locale } = useI18n();
 const toggleLocales = () => {
   const locales = availableLocales;
   locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length];
+};
+
+const logout = () => {
+  auth.logout();
+};
+const goToLogin = () => {
+  router.push('/login');
 };
 </script>
 

@@ -8,5 +8,7 @@
   "based on": "Basado en",
   "experience": "Experiencia",
   "sub title": "Hemos creado una herramienta fácil de usar que calcula dónde se encuentra realmente en su trayectoria profesional de desarrollo de software en función de la experiencia que tiene con lenguajes y herramientas de programación.",
-  "no tools": "Ninguna herramienta seleccionada. Comience a agregar herramientas y luego haga clic en el botón calcular"
+  "no tools": "Ninguna herramienta seleccionada. Comience a agregar herramientas y luego haga clic en el botón calcular",
+  "login": "Acceso",
+  "logout": "Cerrar sesión"
 }
