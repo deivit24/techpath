@@ -8,6 +8,11 @@ interface Login {
   password?: string;
   email?: string;
 }
+interface Register {
+  password?: string;
+  email?: string;
+  name?: string;
+}
 const userKey = new LocalKey('user', '');
 const userValue = LocalStorage.getItem(userKey);
 
@@ -39,6 +44,18 @@ const authStore = defineStore({
     // Actions can be made asynchronous with async
     async login(login: Login) {
       const res = await AuthApi.login(login);
+
+      this.user = res.user;
+      this.tokens = res.tokens;
+      this.refreshToken = res.tokens.refresh.token;
+
+      LocalStorage.setItem(refreshKey, this.refreshToken);
+
+      router.push('/dashboard');
+    },
+    async register(data: Register) {
+      const res = (await AuthApi.register(data)).data;
+      console.log(res);
 
       this.user = res.user;
       this.tokens = res.tokens;

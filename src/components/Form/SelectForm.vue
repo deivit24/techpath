@@ -52,8 +52,8 @@ const querySearch = (queryString: string, cb: any) => {
   cb(results);
 };
 const createFilter = (queryString: string) => {
-  return (restaurant: ToolItem) => {
-    return restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
+  return (tools: ToolItem) => {
+    return tools.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
   };
 };
 const loadAll = () => {

@@ -10,7 +10,7 @@
       <i-carbon:home class="icon-footer" />
       <template #title>{{ t('home') }}</template>
     </el-menu-item>
-    <el-menu-item index="/dashboard">
+    <el-menu-item v-if="isAuth" index="/dashboard">
       <i-carbon:dashboard class="icon-footer" />
       <template #title>Dashboard</template>
     </el-menu-item>
@@ -57,9 +57,6 @@ const toggleLocales = () => {
 
 const logout = () => {
   auth.logout();
-};
-const goToLogin = () => {
-  router.push('/login');
 };
 </script>
 

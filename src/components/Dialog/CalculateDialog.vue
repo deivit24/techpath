@@ -11,7 +11,8 @@
     <PolarAreaChart v-bind="polarAreaChartProps" />
     <template #footer>
       <span class="dialog-footer">
-        <el-button type="primary" @click="$emit('close')"> Confirm </el-button>
+        <el-button type="primary" @click="$emit('close')"> Close </el-button>
+        <el-button type="success" @click="save"> Save </el-button>
       </span>
     </template>
   </el-dialog>
@@ -24,6 +25,7 @@ import { onMounted, ref, computed, defineComponent } from 'vue';
 import { calculateFrontend, calculateBackend, calculateFullStack, calculateDevOps } from '../../utils/calculations';
 import { PolarAreaChart, usePolarAreaChart } from 'vue-chart-3';
 import { Chart, ChartOptions, registerables, RadialLinearScale, ArcElement, Tooltip, Legend } from 'chart.js';
+import toolStore from '@/store/tool';
 Chart.register(RadialLinearScale, ArcElement, Tooltip, Legend, ...registerables);
 defineComponent({
   components: { PolarAreaChart },
@@ -110,8 +112,6 @@ watch(
   (val) => {
     if (val) {
       const temp = props.tools ? props.tools : [];
-      console.log(temp);
-
       const value = calculateFrontend(temp);
       const backendValue = calculateBackend(temp);
       const devopsValue = calculateDevOps(temp);
@@ -123,6 +123,12 @@ watch(
     }
   },
 );
+
+const save = () => {
+  const store = toolStore();
+  const temp = props.tools ? props.tools : [];
+  store.saveTools(temp);
+};
 </script>
 <style scoped>
 .el-button--text {

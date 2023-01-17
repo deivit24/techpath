@@ -13,6 +13,9 @@
         <el-card shadow="hover" style="max-width: 500px">
           <div class="card-header font-serif">
             <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules">
+              <el-form-item prop="name" v-if="!isLogin">
+                <el-input placeholder="Name" v-model="ruleForm.name" />
+              </el-form-item>
               <el-form-item prop="email">
                 <el-input placeholder="Email" v-model="ruleForm.email" />
               </el-form-item>
@@ -71,6 +74,14 @@ const validatePass = (rule: any, value: any, callback: any) => {
     callback();
   }
 };
+
+const validateName = (rule: any, value: any, callback: any) => {
+  if (value === '') {
+    callback(new Error('Please input your name'));
+  } else {
+    callback();
+  }
+};
 const validatePass2 = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the password again'));
@@ -85,28 +96,35 @@ interface LoginForm {
   password?: string;
   checkPass?: string;
   email?: string;
+  name?: string;
 }
 const ruleForm: LoginForm = reactive({
   password: '',
   checkPass: '',
   email: '',
+  name: '',
 });
 
 const rules = reactive({
   password: [{ validator: validatePass, trigger: 'blur' }],
   checkPass: [{ validator: validatePass2, trigger: 'blur' }],
   email: [{ validator: checkEmail, trigger: 'blur' }],
+  name: [{ validator: validateName, trigger: 'blur' }],
 });
 
 const submitForm = async (formEl: FormInstance | undefined) => {
-
   if (!formEl) return;
   await formEl.validate(async (valid) => {
     console.log(valid);
 
     if (valid) {
       delete ruleForm.checkPass;
-      if (isLogin) await auth.login(ruleForm);
+      if (isLogin.value) {
+        delete ruleForm.name;
+        await auth.login(ruleForm);
+      } else {
+        await auth.register(ruleForm);
+      }
     } else {
       console.log('error submit!');
       return false;
