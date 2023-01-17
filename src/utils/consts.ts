@@ -39,7 +39,7 @@ const FRONTEND = [
   },
   {
     name: 'JavaScript',
-    type: ['FRONTEND', ['BACKEND']],
+    type: ['FRONTEND', 'BACKEND'],
     color: '#F0DB4E',
     icon: 'https://img.stackshare.io/service/1209/javascript.jpeg',
   },

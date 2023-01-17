@@ -2,6 +2,8 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } f
 import showCodeMessage from '@/api/code';
 import { formatJsonToUrlParams, instanceObject } from '@/utils/format';
 import { getHeaders } from './headers';
+import { LocalStorage, LocalKey } from 'ts-localstorage';
+import router from '@/router';
 const BASE_PREFIX = import.meta.env.VITE_API_BASEURL;
 
 // create an instance
@@ -42,6 +44,16 @@ axiosInstance.interceptors.response.use(
   },
   (error: AxiosError) => {
     const { response } = error;
+    console.log(response);
+
+    if (response?.data?.message) {
+      ElMessage.error(response?.data?.message);
+      if (response?.status === 401) {
+        const refreshKey = new LocalKey('refreshToken', '');
+        LocalStorage.removeItem(refreshKey);
+      }
+      return Promise.reject(error);
+    }
     if (response) {
       ElMessage.error(showCodeMessage(response.status));
       return Promise.reject(response.data);
