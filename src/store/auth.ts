@@ -61,6 +61,7 @@ const authStore = defineStore({
       this.user = null;
       this.tokens = null;
       this.refreshToken = null;
+      LocalStorage.removeItem(refreshKey);
       router.push('/login');
     },
   },

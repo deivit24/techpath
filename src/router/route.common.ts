@@ -6,7 +6,7 @@ const commonRoutes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'home',
     meta: {
-      title: '',
+      title: 'Home | TechPath',
       icon: '',
     },
     component: () => import('@/views/home/index.vue'),
@@ -24,7 +24,7 @@ const commonRoutes: Array<RouteRecordRaw> = [
     path: '/login',
     name: 'login',
     meta: {
-      title: 'Template configuration process',
+      title: 'Login | TechPath',
       icon: '',
     },
     component: () => import('@/views/login/login.vue'),
