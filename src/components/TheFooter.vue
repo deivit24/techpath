@@ -20,6 +20,11 @@
     </el-menu-item>
   </el-menu>
   <div class="row-auto fixed top-5 right-0">
+    <el-tooltip content="Create Tool" placement="bottom">
+      <button class="icon-btn mx-2 !outline-none" @click="openCreateDialog">
+        <i-carbon:code v-if="isAdmin" class="icon-footer" />
+      </button>
+    </el-tooltip>
     <el-tooltip :content="isDark ? t('change light') : t('change dark')" placement="bottom">
       <button class="icon-btn mx-2 !outline-none" @click="toggleDark()">
         <i-carbon:moon v-if="isDark" class="icon-footer" />
@@ -41,20 +46,27 @@
 </template>
 
 <script setup lang="ts">
-import router from '@/router';
 import { isDark, toggleDark } from '@/utils/dark';
 import authStore from '@/store/auth';
+import dialoglStore from '@/store/dialogs';
 const activeIndex = ref('1');
 const auth = authStore();
+const dialog = dialoglStore();
 const isAuth = computed(() => {
   return auth.getUser;
+});
+
+const isAdmin = computed(() => {
+  return auth.getUser?.role == 'admin';
 });
 const { t, availableLocales, locale } = useI18n();
 const toggleLocales = () => {
   const locales = availableLocales;
   locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length];
 };
-
+const openCreateDialog = () => {
+  dialog.openDialog();
+};
 const logout = () => {
   auth.logout();
 };

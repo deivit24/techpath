@@ -12,4 +12,5 @@ const locale = zhCn;
     </el-config-provider>
   </div>
   <TheFooter></TheFooter>
+  <CreateToolDialog />
 </template>
