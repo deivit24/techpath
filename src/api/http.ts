@@ -39,7 +39,6 @@ axiosInstance.interceptors.response.use(
     if (response.status === 200) {
       return response.data;
     }
-    ElMessage.info(JSON.stringify(response.status));
     return response;
   },
   (error: AxiosError) => {
@@ -68,7 +67,7 @@ const service = {
   },
 
   post<T = any>(url: string, data?: object): Promise<T> {
-    return axiosInstance.post(url, data);
+    return axiosInstance.post(url, data, { headers: getHeaders() });
   },
 
   put<T = any>(url: string, data?: object): Promise<T> {

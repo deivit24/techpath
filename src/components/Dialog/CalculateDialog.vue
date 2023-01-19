@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import { isDark } from '@/utils/dark';
 import { Tool } from '@/types';
-import { onMounted, ref, computed, defineComponent } from 'vue';
+import { ref, computed, defineComponent } from 'vue';
 import { calculateFrontend, calculateBackend, calculateFullStack, calculateDevOps } from '../../utils/calculations';
 import { PolarAreaChart, usePolarAreaChart } from 'vue-chart-3';
 import { Chart, ChartOptions, registerables, RadialLinearScale, ArcElement, Tooltip, Legend } from 'chart.js';
