@@ -11,6 +11,15 @@ const asyncRoutes: Array<RouteRecordRaw> = [
     },
     component: () => import('@/views/dashboard/dashboard.vue'),
   },
+  {
+    path: '/tool-manager',
+    name: 'Tool Manager',
+    meta: {
+      title: 'Tool Manager',
+      icon: '',
+    },
+    component: () => import('@/views/dashboard/ToolManager.vue'),
+  },
 ];
 
 export default asyncRoutes;

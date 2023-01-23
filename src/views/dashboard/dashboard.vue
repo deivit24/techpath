@@ -24,6 +24,6 @@ const user = computed(() => {
   return '';
 });
 const getTools = async () => {
-  return await ToolsApi.getUserTools();
+  return await ToolsApi.getTools();
 };
 </script>
