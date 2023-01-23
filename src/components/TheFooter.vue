@@ -14,6 +14,10 @@
       <i-carbon:dashboard class="icon-footer" />
       <template #title>Dashboard</template>
     </el-menu-item>
+    <el-menu-item v-if="isAdmin" index="/tool-manager">
+      <i-carbon:tool-kit class="icon-footer" />
+      <template #title>Tool Manager</template>
+    </el-menu-item>
     <el-menu-item v-if="!isAuth" index="/login">
       <i-carbon:login class="icon-footer" />
       <template #title>{{ t('login') }}</template>

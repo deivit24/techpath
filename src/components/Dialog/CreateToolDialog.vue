@@ -1,27 +1,36 @@
 <template>
-  <el-dialog v-model="dialog" title="Create a tool" :close-on-click-modal="false" :show-close="false">
+  <el-dialog v-model="dialog" width="500px" :close-on-click-modal="false" :show-close="false">
     <el-card shadow="hover">
-      <div class="card-header font-serif">
+      <div class="card-body font-serif">
         <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules">
-          <el-form-item prop="name">
-            <el-input placeholder="Name" v-model="ruleForm.name" />
-          </el-form-item>
+          <el-row>
+            <el-col :span="12" class="pr-1">
+              <el-form-item prop="name">
+                <el-input placeholder="Name" v-model="ruleForm.name" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" class="pl-1">
+              <el-form-item prop="type">
+                <el-select v-model="ruleForm.type" multiple placeholder="Select Types" style="width: 100%">
+                  <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <el-form-item prop="imageUrl">
             <el-input placeholder="Image Url" v-model="ruleForm.imageUrl" />
           </el-form-item>
-
-          <el-form-item prop="type">
-            <el-select v-model="ruleForm.type" multiple placeholder="Select Types" style="width: 100%">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" class="mr-auto" @click="submitForm(ruleFormRef)">Submit</el-button>
-          </el-form-item>
+          <el-row>
+            <el-form-item>
+              <el-button type="primary" class="mr-auto" @click="submitForm(ruleFormRef)">Submit</el-button>
+            </el-form-item>
+            <el-form-item class="ml-auto">
+              <el-button @click="store.closeDialog()"> CLOSE </el-button>
+            </el-form-item>
+          </el-row>
         </el-form>
       </div>
     </el-card>
-    <el-button @click="store.closeDialog()"> CLOSE </el-button>
   </el-dialog>
 </template>
 
@@ -111,3 +120,9 @@ const resetForm = (formEl: FormInstance | undefined) => {
   formEl.resetFields();
 };
 </script>
+
+<style>
+.el-dialog__header {
+  display: none;
+}
+</style>

@@ -29,7 +29,6 @@ import { Tool } from '@/types';
 import { ref } from 'vue';
 
 const dialog = ref(false);
-const toolPage = ref(null);
 const tools = ref<Tool[]>([]);
 const calculateTools = ref<Tool[]>([]);
 const { t } = useI18n();
