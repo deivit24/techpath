@@ -71,7 +71,11 @@ const service = {
   },
 
   put<T = any>(url: string, data?: object): Promise<T> {
-    return axiosInstance.put(url, data);
+    return axiosInstance.put(url, data, { headers: getHeaders() });
+  },
+
+  patch<T = any>(url: string, data?: object): Promise<T> {
+    return axiosInstance.patch(url, data, { headers: getHeaders() });
   },
 
   delete<T = any>(url: string, data?: object): Promise<T> {

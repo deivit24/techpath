@@ -6,7 +6,6 @@
 import { isDark } from '@/utils/dark';
 import type { Engine } from 'tsparticles-engine';
 import { loadFull } from 'tsparticles';
-import { onMounted } from 'vue';
 
 const key = ref(0);
 const options = ref({

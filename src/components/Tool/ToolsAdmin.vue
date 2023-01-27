@@ -5,7 +5,7 @@
       <div style="padding: 10px">
         <span class="font-serif">{{ name }}</span>
         <div class="bottom">
-          <button @click="">
+          <button @click="openCreateDialog(props.toolItem.id)">
             <i-carbon:pen class="icon" />
           </button>
           <button @click="">
@@ -19,14 +19,17 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-
+import dialoglStore from '@/store/dialogs';
+const dialog = dialoglStore();
 const props = defineProps({
   toolItem: {
     type: Object,
     default: {},
   },
 });
-
+const openCreateDialog = (id: string) => {
+  dialog.openDialog(id);
+};
 const image = computed(() => {
   const value = props.toolItem;
   const image = value?.imageUrl ? value.imageUrl : '';
