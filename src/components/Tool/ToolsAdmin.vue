@@ -1,15 +1,15 @@
 <template>
   <el-col :span="4">
-    <el-card :body-style="{ padding: '2px' }">
+    <el-card :body-style="{ padding: '2px' }" class="mb-4">
       <el-image :src="image" :zoom-rate="1.2" :initial-index="4" fit="cover" />
       <div style="padding: 10px">
         <span class="font-serif">{{ name }}</span>
         <div class="bottom">
           <button @click="openCreateDialog(props.toolItem.id)">
-            <i-carbon:pen class="icon" />
+            <i-carbon:pen class="icon text-blue-500" />
           </button>
-          <button @click="">
-            <i-carbon:trash-can class="icon" />
+          <button @click="handleClose(deleteTool)">
+            <i-carbon:trash-can class="icon text-red-500" />
           </button>
         </div>
       </div>
@@ -20,6 +20,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import dialoglStore from '@/store/dialogs';
+import ToolsApi from '@/api/modules/tools';
 const dialog = dialoglStore();
 const props = defineProps({
   toolItem: {
@@ -27,6 +28,31 @@ const props = defineProps({
     default: {},
   },
 });
+
+const handleClose = (done: () => void) => {
+  ElMessageBox.confirm(
+    `Are you sure you want to delete ${props.toolItem.name}? Deleting this will also delete all relations to users`,
+    {
+      distinguishCancelAndClose: true,
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+    },
+  )
+    .then(() => {
+      done();
+    })
+    .catch(() => {
+      // catch error
+    });
+};
+const deleteTool = async () => {
+  try {
+    await ToolsApi.deleteTool(props.toolItem.id);
+    ElMessage.success('Tool successfully deleted');
+  } catch (e) {
+    console.error(e);
+  }
+};
 const openCreateDialog = (id: string) => {
   dialog.openDialog(id);
 };
