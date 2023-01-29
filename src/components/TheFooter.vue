@@ -6,7 +6,7 @@
     :collapse="true"
     :router="true"
   >
-    <el-menu-item index="/">
+    <el-menu-item v-if="!isAuth" index="/">
       <i-carbon:home class="icon-footer" />
       <template #title>{{ t('home') }}</template>
     </el-menu-item>

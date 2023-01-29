@@ -1,6 +1,6 @@
 // Business routes that require authentication
 import { RouteRecordRaw } from 'vue-router';
-
+// here
 const asyncRoutes: Array<RouteRecordRaw> = [
   {
     path: '/dashboard',
