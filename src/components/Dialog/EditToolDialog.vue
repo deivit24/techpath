@@ -23,12 +23,17 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="16" class="pr-2">
+            <el-col :span="24">
               <el-form-item prop="imageUrl">
                 <el-input placeholder="Image Url" v-model="ruleForm.imageUrl" />
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="12">
+              <el-form-item prop="link">
+                <el-input placeholder="Org Link" v-model="ruleForm.link" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
               <el-form-item prop="color">
                 <el-input placeholder="HEX Color" v-model="ruleForm.color">
                   <template #prepend>#</template>
@@ -68,12 +73,14 @@ interface CreatToolForm {
   imageUrl?: string;
   description?: string;
   color?: string;
+  link?: string;
   type?: string[];
 }
 const ruleForm: CreatToolForm = reactive({
   name: '',
   imageUrl: '',
   description: '',
+  link: '',
   color: '',
   type: [],
 });

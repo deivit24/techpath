@@ -1,77 +1,89 @@
 <template>
   <div style="height: 100vh" class="container max-w-5xl mx-auto relative h-1/1 flex flex-col justify-start">
-    <el-row :gutter="20" class="mt-15">
-      <el-col :span="16">
-        <el-card shadow="hover">
-          <h1 class="font-serif font-extralight text-2xl mb-3">Create Tool</h1>
-          <div class="card-body font-serif">
-            <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules">
-              <el-row>
-                <el-col :span="16" class="pr-1">
-                  <el-form-item prop="name">
-                    <el-input placeholder="Name" v-model="ruleForm.name" />
+    <el-tabs type="border-card" class="mt-15">
+      <el-tab-pane label="Tool Manager">
+        <el-row :gutter="20">
+          <el-col :span="16">
+            <el-card shadow="hover">
+              <h1 class="font-serif font-extralight text-2xl mb-3">Create Tool</h1>
+              <div class="card-body font-serif">
+                <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules">
+                  <el-row>
+                    <el-col :span="16" class="pr-1">
+                      <el-form-item prop="name">
+                        <el-input placeholder="Name" v-model="ruleForm.name" />
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8" class="pl-1">
+                      <el-form-item prop="type">
+                        <el-select
+                          v-model="ruleForm.type"
+                          multiple
+                          placeholder="Select Types"
+                          style="width: 100%"
+                          collapse-tags
+                          collapse-tags-tooltip
+                        >
+                          <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                          />
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-form-item prop="imageUrl">
+                    <el-input placeholder="Image Url" v-model="ruleForm.imageUrl" />
                   </el-form-item>
-                </el-col>
-                <el-col :span="8" class="pl-1">
-                  <el-form-item prop="type">
-                    <el-select
-                      v-model="ruleForm.type"
-                      multiple
-                      placeholder="Select Types"
-                      style="width: 100%"
-                      collapse-tags
-                      collapse-tags-tooltip
-                    >
-                      <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
+                  <el-row>
+                    <el-form-item>
+                      <el-button type="primary" class="mr-auto" @click="submitForm(ruleFormRef)">Submit</el-button>
+                    </el-form-item>
+                  </el-row>
+                </el-form>
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="8">
+            <el-card shadow="hover">
+              <h1 class="font-serif font-extralight text-2xl mb-3">Tool Types</h1>
+              <el-row class="row-bg" justify="center">
+                <el-col :span="12"
+                  ><div class="bg-blue-600 flex flex-col justify-center items-center" style="height: 75px">
+                    Frontend
+                  </div></el-col
+                >
+                <el-col :span="12"
+                  ><div class="bg-red-600 flex flex-col justify-center items-center" style="height: 75px">
+                    Backend
+                  </div></el-col
+                >
+                <el-col :span="12"
+                  ><div class="bg-purple-600 flex flex-col justify-center items-center" style="height: 75px">
+                    Fullstack
+                  </div></el-col
+                >
+                <el-col :span="12"
+                  ><div class="bg-yellow-600 flex flex-col justify-center items-center" style="height: 75px">
+                    DevOps
+                  </div></el-col
+                >
               </el-row>
-              <el-form-item prop="imageUrl">
-                <el-input placeholder="Image Url" v-model="ruleForm.imageUrl" />
-              </el-form-item>
-              <el-row>
-                <el-form-item>
-                  <el-button type="primary" class="mr-auto" @click="submitForm(ruleFormRef)">Submit</el-button>
-                </el-form-item>
-              </el-row>
-            </el-form>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="8">
-        <el-card shadow="hover">
-          <h1 class="font-serif font-extralight text-2xl mb-3">Tool Types</h1>
-          <el-row class="row-bg" justify="center">
-            <el-col :span="12"
-              ><div class="bg-blue-600 flex flex-col justify-center items-center" style="height: 75px">
-                Frontend
-              </div></el-col
-            >
-            <el-col :span="12"
-              ><div class="bg-red-600 flex flex-col justify-center items-center" style="height: 75px">
-                Backend
-              </div></el-col
-            >
-            <el-col :span="12"
-              ><div class="bg-purple-600 flex flex-col justify-center items-center" style="height: 75px">
-                Fullstack
-              </div></el-col
-            >
-            <el-col :span="12"
-              ><div class="bg-yellow-600 flex flex-col justify-center items-center" style="height: 75px">
-                DevOps
-              </div></el-col
-            >
-          </el-row>
-        </el-card>
-      </el-col>
-      <el-col :span="24">
-        <el-row :gutter="20" class="mt-15">
-          <ToolsAdmin v-for="tool in tools" :key="tool.name" :tool-item="tool" />
+            </el-card>
+          </el-col>
+          <el-col :span="24" class="admin-card">
+            <el-row :gutter="20" class="mt-15">
+              <ToolsAdmin v-for="tool in tools" :key="tool.name" :tool-item="tool" />
+            </el-row>
+          </el-col>
         </el-row>
-      </el-col>
-    </el-row>
+      </el-tab-pane>
+      <el-tab-pane label="Career Path Manager">Career Path Manager</el-tab-pane>
+      <el-tab-pane label="User Manager">Users</el-tab-pane>
+      <el-tab-pane label="Roles">Role</el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -164,8 +176,27 @@ onMounted(async () => {
 });
 </script>
 
-<style>
+<style scoped>
 .el-dialog__header {
   display: none;
+}
+.admin-card {
+  height: calc(100vh - 400px);
+  overflow: auto;
+}
+
+.admin-card::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-card::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 100px;
+}
+
+.admin-card::-webkit-scrollbar-thumb {
+  background-color: #c0ffee;
+
+  border-radius: 100px;
 }
 </style>

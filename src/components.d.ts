@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     CalculateDialog: typeof import('./components/Dialog/CalculateDialog.vue')['default']
+    DashboardUserTools: typeof import('./components/Dashboard/DashboardUserTools.vue')['default']
     EditToolDialog: typeof import('./components/Dialog/EditToolDialog.vue')['default']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -28,9 +29,10 @@ declare module '@vue/runtime-core' {
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     HomeTitle: typeof import('./components/Home/HomeTitle.vue')['default']
-    'ICarbon:code': typeof import('~icons/carbon/code')['default']
     'ICarbon:dashboard': typeof import('~icons/carbon/dashboard')['default']
     'ICarbon:exit': typeof import('~icons/carbon/exit')['default']
     'ICarbon:home': typeof import('~icons/carbon/home')['default']

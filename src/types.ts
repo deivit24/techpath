@@ -37,3 +37,8 @@ export interface Tool {
    */
   years: number;
 }
+
+export interface ToolApi {
+  id: string;
+  value: string;
+}

@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="4">
+  <el-col :sm="6" :xs="12" :md="4">
     <el-card :body-style="{ padding: '2px' }" class="mb-4">
       <el-image :src="image" :zoom-rate="1.2" :initial-index="4" fit="cover" />
       <div style="padding: 10px">
@@ -21,6 +21,7 @@
 import { computed } from 'vue';
 import dialoglStore from '@/store/dialogs';
 import ToolsApi from '@/api/modules/tools';
+
 const dialog = dialoglStore();
 const props = defineProps({
   toolItem: {
