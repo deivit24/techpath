@@ -42,3 +42,14 @@ export interface ToolApi {
   id: string;
   value: string;
 }
+
+export interface UserToolApi {
+  id: string;
+  user: string;
+  experience: number;
+  tool: {
+    id: string;
+    name: string;
+    color: string;
+  };
+}
