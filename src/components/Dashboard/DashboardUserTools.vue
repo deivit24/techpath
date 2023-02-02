@@ -33,13 +33,18 @@
         <i-carbon-add class="mr-2" /> Add Tool
       </el-button>
     </el-col>
+    <el-col :span="24">
+      <p v-for="tool in userTools" :key="tool.id">
+        {{ tool }}
+      </p>
+    </el-col>
   </el-row>
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import { EXPERIENCE } from '../../utils/consts';
-import { ToolApi } from '@/types';
+import { ToolApi, UserToolApi } from '@/types';
 import { isDark } from '@/utils/dark';
 import ToolsApi from '@/api/modules/tools';
 
@@ -47,7 +52,7 @@ const emit = defineEmits(['add']);
 const toolSelect = ref('');
 const expSelect = ref('');
 const toolId = ref('');
-
+const userTools = ref<UserToolApi[]>([]);
 const tools = ref<ToolApi[]>([]);
 const querySearch = (queryString: string, cb: any) => {
   const results = queryString ? tools.value.filter(createFilter(queryString)) : tools.value;
@@ -59,7 +64,9 @@ const createFilter = (queryString: string) => {
     return tools.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
   };
 };
-
+const getUserTools = async () => {
+  return await ToolsApi.getUserTools();
+};
 const handleSubmit = async () => {
   if (toolSelect.value === '' || expSelect.value === '') {
     let message = '';
@@ -92,6 +99,7 @@ const handleSelect = (tool: any) => {
   toolId.value = tool.id;
 };
 onMounted(async () => {
+  userTools.value = await getUserTools();
   tools.value = await getAllTools();
 });
 </script>

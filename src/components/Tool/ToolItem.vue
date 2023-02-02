@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, onMounted } from 'vue';
-import { EXPERIENCE, TOOLS } from '../../utils/consts';
+import { TOOLS } from '../../utils/consts';
 
 const props = defineProps({
   toolItem: {
