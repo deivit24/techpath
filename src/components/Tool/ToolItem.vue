@@ -32,7 +32,9 @@ const tool = ref();
 
 const icon = computed(() => {
   const value = tool.value;
-  let test = value?.icon ? value.icon : '';
+  console.log(value);
+
+  let test = value?.imageUrl ? value.imageUrl : '';
 
   return test;
 });
