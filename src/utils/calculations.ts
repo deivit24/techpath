@@ -38,23 +38,23 @@ const calculateFrontend = (tools: Array<Tool>) => {
 
   for (const t of tools) {
     if (UI.includes(t.tool.toUpperCase())) {
-      uiYears.push(t.years);
+      uiYears.push(t.years * 10);
     } else if (FRONTENDLANGUAGE.includes(t.tool.toUpperCase())) {
-      langYears.push(t.years);
+      langYears.push(t.years * 10);
     } else if (FRAMEWORK.includes(t.tool.toUpperCase())) {
-      frameworkYears.push(t.years);
+      frameworkYears.push(t.years * 10);
     }
   }
 
-  const uiScore = uiYears.length > 0 ? getAverage(uiYears) : 0;
-  const langScore = langYears.length > 0 ? getAverage(langYears) : 0;
-  const frameworkScore = frameworkYears.length > 0 ? getAverage(frameworkYears) : 0;
+  const uiScore = calculateWeightedCategoryScore(uiYears, 0.1)
+  const langScore = calculateWeightedCategoryScore(langYears, 0.3)
+  const frameworkScore = calculateWeightedCategoryScore(frameworkYears, 0.2)
 
   const uiWA = weightedAverageScore(uiScore, UIWEIGHT);
   const langWA = weightedAverageScore(langScore, FRONTENDLANGUAGEWEIGHT);
   const frameworkWA = weightedAverageScore(frameworkScore, FRAMEWORKWEIGHT);
 
-  return ((uiWA + langWA + frameworkWA) / 10) * 100;
+  return uiWA + langWA + frameworkWA
 };
 
 const calculateBackend = (tools: Array<Tool>) => {
@@ -72,25 +72,9 @@ const calculateBackend = (tools: Array<Tool>) => {
     }
   }
 
-  let langScore: number = 0;
-  if (langYears.length === 0) {
-    langScore = 0;
-  } else if (langYears.length === 1) {
-    langScore = getAverage(langYears);
-  } else {
-    langYears.sort((a, b) => a - b);
-    let maxScore = langYears[langYears.length - 1];
-    let otherScores = langYears.slice(0, langYears.length - 1);
-    const otherWeith = otherScores.map((score) => score * 0.3);
-    const avg = getSum(otherWeith);
-
-    let totalScore = maxScore + avg;
-    if (totalScore >= 100) langScore = 100;
-    else langScore = totalScore;
-  }
-
-  const dbScore = dbYears.length > 0 ? getAverage(dbYears) : 0;
-  const frameworkScore = frameworkYears.length > 0 ? getAverage(frameworkYears) : 0;
+  const langScore = calculateWeightedCategoryScore(langYears, 0.3)
+  const dbScore = calculateWeightedCategoryScore(dbYears, 0.2)
+  const frameworkScore = calculateWeightedCategoryScore(frameworkYears, 0.1)
 
   const dbWA = weightedAverageScore(dbScore, DBWEIGHT);
   const langWA = weightedAverageScore(langScore, BACKENDLANGUAGEWEIGHT);
@@ -174,4 +158,23 @@ const getSum = (arr: number[]): number => {
   }, 0);
 };
 
+const calculateWeightedCategoryScore = (scores: number[], weight: number): number => {
+    let langScore: number = 0;
+    if (scores.length === 0) {
+        langScore = 0;
+    } else if (scores.length === 1) {
+        langScore = getAverage(scores);
+    } else {
+        scores.sort((a, b) => a - b);
+        let maxScore = scores[scores.length - 1];
+        let otherScores = scores.slice(0, scores.length - 1);
+        const otherScoresWeight = otherScores.map((score) => score * weight);
+        const otherScoresWeightedAvergage = getSum(otherScoresWeight);
+
+        let totalScore = maxScore + otherScoresWeightedAvergage;
+        if (totalScore >= 100) langScore = 100;
+        else langScore = totalScore;
+    }
+    return langScore;
+}
 export { calculateFrontend, calculateBackend, calculateFullStack, calculateDevOps };
