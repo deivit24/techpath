@@ -29,7 +29,7 @@ const getAverage = (array) => {
 const backendLanguages = [
   { name: 'Java', score: 90 },
   { name: 'Python', score: 50 },
-  { name: 'Ruby', score: 20 },
+  { name: 'Ruby', score: 5 },
 ];
 
 console.log(calculateScore(backendLanguages));
