@@ -2,77 +2,63 @@
   <div style="height: 100vh" class="container max-w-5xl mx-auto relative h-1/1 flex flex-col justify-start">
     <el-tabs type="border-card" class="mt-15">
       <el-tab-pane label="Tool Manager">
-        <el-row :gutter="20">
-          <el-col :span="16">
+        <el-row>
+          <el-col :span="24">
             <el-card shadow="hover">
-              <h1 class="font-serif font-extralight text-2xl mb-3">Create Tool</h1>
-              <div class="card-body font-serif">
-                <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules">
-                  <el-row>
-                    <el-col :span="16" class="pr-1">
-                      <el-form-item prop="name">
-                        <el-input placeholder="Name" v-model="ruleForm.name" />
+              <el-row>
+                <el-col :span="16">
+                  <h1 class="font-serif font-extralight text-2xl mb-3">Create Tool</h1>
+                  <div class="card-body font-serif">
+                    <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules">
+                      <el-row>
+                        <el-col :span="16" class="pr-1">
+                          <el-form-item prop="name">
+                            <el-input placeholder="Name" v-model="ruleForm.name" />
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="8" class="pl-1">
+                          <el-form-item prop="type">
+                            <el-select
+                              v-model="ruleForm.type"
+                              multiple
+                              placeholder="Select Types"
+                              style="width: 100%"
+                              collapse-tags
+                              collapse-tags-tooltip
+                            >
+                              <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                              />
+                            </el-select>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="12" class="pr-1">
+                          <el-form-item prop="link">
+                            <el-input placeholder="Org Link" v-model="ruleForm.link" />
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="12" class="pl-1">
+                          <el-form-item prop="color">
+                            <el-input placeholder="HEX Color eg. #FFFFFF" v-model="ruleForm.color" />
+                          </el-form-item>
+                        </el-col>
+                      </el-row>
+                      <el-form-item>
+                        <el-button type="primary" class="mr-auto" @click="submitForm(ruleFormRef)">Submit</el-button>
                       </el-form-item>
-                    </el-col>
-                    <el-col :span="8" class="pl-1">
-                      <el-form-item prop="type">
-                        <el-select
-                          v-model="ruleForm.type"
-                          multiple
-                          placeholder="Select Types"
-                          style="width: 100%"
-                          collapse-tags
-                          collapse-tags-tooltip
-                        >
-                          <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value"
-                          />
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-form-item prop="imageUrl">
-                    <el-input placeholder="Image Url" v-model="ruleForm.imageUrl" />
-                  </el-form-item>
-                  <el-row>
-                    <el-form-item>
-                      <el-button type="primary" class="mr-auto" @click="submitForm(ruleFormRef)">Submit</el-button>
-                    </el-form-item>
-                  </el-row>
-                </el-form>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :span="8">
-            <el-card shadow="hover">
-              <h1 class="font-serif font-extralight text-2xl mb-3">Tool Types</h1>
-              <el-row class="row-bg" justify="center">
-                <el-col :span="12"
-                  ><div class="bg-blue-600 flex flex-col justify-center items-center" style="height: 75px">
-                    Frontend
-                  </div></el-col
-                >
-                <el-col :span="12"
-                  ><div class="bg-red-600 flex flex-col justify-center items-center" style="height: 75px">
-                    Backend
-                  </div></el-col
-                >
-                <el-col :span="12"
-                  ><div class="bg-purple-600 flex flex-col justify-center items-center" style="height: 75px">
-                    Fullstack
-                  </div></el-col
-                >
-                <el-col :span="12"
-                  ><div class="bg-yellow-600 flex flex-col justify-center items-center" style="height: 75px">
-                    DevOps
-                  </div></el-col
-                >
+                    </el-form>
+                  </div>
+                </el-col>
+                <el-col :span="8">
+                  <ToolFileUpload class="mt-9 p-2" @add-image="addImage" />
+                </el-col>
               </el-row>
             </el-card>
           </el-col>
+
           <el-col :span="24" class="admin-card">
             <el-row :gutter="20" class="mt-15">
               <ToolsAdmin v-for="tool in tools" :key="tool.name" :tool-item="tool" />
@@ -96,11 +82,15 @@ const ruleFormRef = ref<FormInstance>();
 interface CreateToolForm {
   name?: string;
   imageUrl?: string;
+  link?: string;
+  color?: string;
   type?: string[];
 }
 const ruleForm: CreateToolForm = reactive({
   name: '',
   imageUrl: '',
+  link: '',
+  color: '',
   type: [],
 });
 const tools: Ref<Array<CreateToolForm>> = ref([]);
@@ -118,7 +108,9 @@ const options = [
     label: 'DevOps',
   },
 ];
-
+const addImage = (url: string) => {
+  ruleForm.imageUrl = url;
+};
 const validateName = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input tool name'));

@@ -55,8 +55,6 @@ const authStore = defineStore({
     },
     async register(data: Register) {
       const res = (await AuthApi.register(data)).data;
-      console.log(res);
-
       this.user = res.user;
       this.tokens = res.tokens;
       this.refreshToken = res.tokens.refresh.token;
