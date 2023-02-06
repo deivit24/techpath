@@ -32,8 +32,6 @@ const tool = ref();
 
 const icon = computed(() => {
   const value = tool.value;
-  console.log(value);
-
   let test = value?.imageUrl ? value.imageUrl : '';
 
   return test;

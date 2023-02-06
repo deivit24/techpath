@@ -9,6 +9,7 @@ const ToolsApi = {
   deleteTool: (id?: string) => service.delete(`/tools/${id}`),
   getUserTool: (id?: string) => service.get(`/tools/${id}/user`),
   getUserTools: (tool?: object) => service.get(`/tools/user`),
+  uploadToolImage: (file?: FormData, id?: string) => service.upload(`/tools/${id}/upload`, file),
 };
 
 export default ToolsApi;

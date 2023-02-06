@@ -1,16 +1,16 @@
 import authStore from '@/store/auth';
 
-const getHeaders = () => {
+const getHeaders = (file: boolean = false) => {
   const token = authStore().getToken;
 
   if (!token) {
     return {
-      'Content-Type': 'application/json',
+      'Content-Type': file ? 'multipart/form-data' : 'application/json',
       Authorization: '',
     };
   } else {
     return {
-      'Content-Type': 'application/json',
+      'Content-Type': file ? 'multipart/form-data' : 'application/json',
       Authorization: `Bearer ${token}`,
     };
   }

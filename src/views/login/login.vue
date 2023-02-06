@@ -115,8 +115,6 @@ const rules = reactive({
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate(async (valid) => {
-    console.log(valid);
-
     if (valid) {
       delete ruleForm.checkPass;
       if (isLogin.value) {
@@ -126,7 +124,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         await auth.register(ruleForm);
       }
     } else {
-      console.log('error submit!');
+      console.error('error submit!');
       return false;
     }
   });

@@ -43,8 +43,6 @@ axiosInstance.interceptors.response.use(
   },
   (error: AxiosError) => {
     const { response } = error;
-    console.log(response);
-
     if (response?.data?.message) {
       ElMessage.error(response?.data?.message);
       if (response?.status === 401) {
@@ -82,9 +80,9 @@ const service = {
     return axiosInstance.delete(url, { headers: getHeaders() });
   },
 
-  upload: (url: string, file: FormData | File) =>
+  upload: (url: string, file?: FormData | File) =>
     axiosInstance.post(url, file, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: getHeaders(true),
     }),
   download: (url: string, data: instanceObject) => {
     window.location.href = `${BASE_PREFIX}/${url}?${formatJsonToUrlParams(data)}`;
