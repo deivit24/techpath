@@ -26,7 +26,7 @@ const handleChange: UploadProps['onChange'] = async (uploadFile, uploadFiles) =>
   let formData = new FormData();
   //@ts-ignore
   formData.append('files', uploadFile.raw);
-  const res = await ToolsApi.uploadToolImage(formData, '63e02c25846628002f4ff1a8');
+  const res = await ToolsApi.uploadToolImage(formData);
   //@ts-ignore
   emit('addImage', res.data.imageUrl);
   fileList.value = fileList.value;
