@@ -10,7 +10,7 @@
         <DashboardUserTools />
       </el-tab-pane>
       <el-tab-pane label="Career Analyst">Career Analyst</el-tab-pane>
-      <el-tab-pane label="Profile">Profile</el-tab-pane>
+      <el-tab-pane label="Profile"><DashboardUserProfile :username="user" :email="email" /></el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -27,8 +27,11 @@ onMounted(async () => {
 });
 
 const user = computed(() => {
-  if (auth.getUser) return auth.getUser?.name;
-  return '';
+  return auth.getUser?.name;
+});
+
+const email = computed(() => {
+  return auth.getUser?.email;
 });
 const getTools = async () => {
   return await ToolsApi.getTools();

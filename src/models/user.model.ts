@@ -6,3 +6,9 @@ export interface User {
   name: Nullable<string>;
   role: Nullable<string>;
 }
+
+export interface UserSettings {
+  darkMode: Nullable<boolean>;
+  language: Nullable<boolean>;
+  avatar: Nullable<string>;
+}
