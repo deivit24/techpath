@@ -10,7 +10,7 @@
         <DashboardUserTools />
       </el-tab-pane>
       <el-tab-pane label="Career Analyst">Career Analyst</el-tab-pane>
-      <el-tab-pane label="Profile"><DashboardUserProfile :username="user" :email="email" /></el-tab-pane>
+      <el-tab-pane label="Profile"><DashboardUserProfile /></el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -30,9 +30,6 @@ const user = computed(() => {
   return auth.getUser?.name;
 });
 
-const email = computed(() => {
-  return auth.getUser?.email;
-});
 const getTools = async () => {
   return await ToolsApi.getTools();
 };
