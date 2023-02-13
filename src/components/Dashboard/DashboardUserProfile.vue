@@ -9,7 +9,7 @@
           </template>
         </el-skeleton>
         <div style="padding: 14px" class="flex">
-          <span>{{ $props.username }}</span>
+          <span>{{ username }}</span>
           <el-upload
             :limit="1"
             :show-file-list="false"
@@ -28,77 +28,100 @@
       </el-card>
     </el-col>
     <el-col :span="18" class="p-5">
-      <el-descriptions title="Profile Settings" :column="3" :border="true">
-        <template #extra>
-          <el-tooltip content="Edit Profile Settings" placement="top">
-            <button class="icon-btn mx-2" @click="">
-              <i-carbon:edit class="icon-footer" />
-            </button>
-          </el-tooltip>
-        </template>
-        <el-descriptions-item>
-          <template #label>
-            <div class="cell-item">
-              <i-carbon:user class="mr-2" />
-              Name
-            </div>
-          </template>
-          {{ $props.username }}
-        </el-descriptions-item>
-        <el-descriptions-item>
-          <template #label>
-            <div class="cell-item"><i-carbon:email class="mr-2" /> Email</div>
-          </template>
-          {{ $props.email }}
-        </el-descriptions-item>
+      <el-row>
+        <el-col :span="8" class="px-2">
+          <el-input :readonly="!editMode" v-model="username" placeholder="Username">
+            <template #prefix>
+              <el-icon class="el-input__icon"> <i-carbon-user></i-carbon-user> </el-icon>
+            </template>
+          </el-input>
+        </el-col>
+        <el-col :span="8" class="px-2">
+          <el-input :readonly="!editMode" v-model="email" placeholder="Email">
+            <template #prefix>
+              <el-icon class="el-input__icon"> <i-carbon-email></i-carbon-email> </el-icon>
+            </template>
+          </el-input>
+        </el-col>
+        <el-col :span="8" class="px-2">
+          <el-select :disabled="!editMode" v-model="language" clearable placeholder="Select Language" class="w-1/1">
+            <template #prefix>
+              <el-icon class="el-input__icon"> <i-carbon-language></i-carbon-language> </el-icon>
+            </template>
+            <el-option v-for="item in ['ENGLISH', 'SPANISH']" :label="item" :value="item" />
+          </el-select>
+        </el-col>
+        <el-col :span="12" class="px-2 mt-3">
+          <el-input :readonly="!editMode" v-model="github" placeholder="Github URL">
+            <template #prefix>
+              <el-icon class="el-input__icon"> <i-carbon-logo-github></i-carbon-logo-github> </el-icon>
+            </template>
+          </el-input>
+        </el-col>
+        <el-col :span="12" class="px-2 mt-3">
+          <el-input :readonly="!editMode" v-model="linkedin" placeholder="LinkedIn URL">
+            <template #prefix>
+              <el-icon class="el-input__icon"> <i-carbon-logo-linkedin></i-carbon-logo-linkedin> </el-icon>
+            </template>
+          </el-input>
+        </el-col>
 
-        <el-descriptions-item>
-          <template #label>
-            <div class="cell-item">
-              <i-carbon:virtual-private-cloud class="mr-2" />
-              Private
-            </div>
-          </template>
-          True
-        </el-descriptions-item>
-        <el-descriptions-item>
-          <template #label>
-            <div class="cell-item">
-              <i-carbon:logo-github class="mr-2" />
-              GitHub
-            </div>
-          </template>
-          https://github.com/devit24
-        </el-descriptions-item>
-        <el-descriptions-item>
-          <template #label>
-            <div class="cell-item">
-              <i-carbon:logo-linkedin class="mr-2" />
-              LinkedIn
-            </div>
-          </template>
-          https://github.com/devit24
-        </el-descriptions-item>
-      </el-descriptions>
+        <el-col :span="10" class="px-2 mt-3 flex">
+          <p class="font-serif text-sm mr-2 mt-2">{{ darkModeText }}</p>
+          <el-switch
+            :disabled="!editMode"
+            size="large"
+            v-model="darkMode"
+            inline-prompt
+            :active-icon="Sunny"
+            :inactive-icon="Moon"
+          />
+        </el-col>
+        <el-col :span="10" class="px-2 mt-3 flex">
+          <p class="font-serif text-sm mr-2 mt-2">{{ isPrivateText }}</p>
+          <el-switch
+            :disabled="!editMode"
+            size="large"
+            v-model="isPrivate"
+            inline-prompt
+            :active-icon="Lock"
+            :inactive-icon="Unlock"
+          />
+        </el-col>
+        <el-col :span="4" class="px-2 mt-3 flex justify-end">
+          <el-button v-if="!editMode" type="info" class="ml-auto" @click="editMode = true"> Edit </el-button>
+          <el-button v-else type="primary" class="ml-auto" @click="editMode = false"> Save </el-button>
+        </el-col>
+      </el-row>
     </el-col>
   </el-row>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import authStore from '@/store/auth';
 import UsersApi from '@/api/modules/user';
+import { Sunny, Moon, Lock, Unlock } from '@element-plus/icons-vue';
 import type { UploadProps, UploadUserFile } from 'element-plus';
 const auth = authStore();
-
-// const fileList = ref<UploadUserFile[]>([]);
-const props = defineProps<{
-  username?: string | null;
-  email?: string | null;
-}>();
+const editMode = ref(false);
 const loading = ref(false);
+const darkMode = ref(false);
+const isPrivate = ref(false);
+const username = ref('');
+const language = ref('ENGLISH');
+const github = ref('');
+const linkedin = ref('');
+const email = ref('');
 const avatar = computed(() => {
   return auth.getUserAvatar ? auth.getUserAvatar : '';
+});
+
+const darkModeText = computed(() => {
+  return darkMode.value ? 'Dark Mode' : 'Light Mode';
+});
+const isPrivateText = computed(() => {
+  return isPrivate.value ? 'Private' : 'Public';
 });
 const handleChange: UploadProps['onChange'] = async (uploadFile, uploadFiles) => {
   loading.value = true;
@@ -111,6 +134,16 @@ const handleChange: UploadProps['onChange'] = async (uploadFile, uploadFiles) =>
 
   loading.value = false;
 };
+onMounted(async () => {
+  const res = await UsersApi.getUserSettings();
+  darkMode.value = res.darkMode;
+  isPrivate.value = res.private;
+  language.value = res.language;
+  email.value = auth.getUser?.email ? auth.getUser?.email : '';
+  username.value = auth.getUser?.name ? auth.getUser?.name : '';
+  github.value = res.github ? res.github : '';
+  linkedin.value = res.linkedin ? res.linkedin : '';
+});
 </script>
 
 <style scoped>
