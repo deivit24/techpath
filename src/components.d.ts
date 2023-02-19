@@ -65,5 +65,6 @@ declare module '@vue/runtime-core' {
     ToolFileUpload: typeof import('./components/Tool/ToolFileUpload.vue')['default']
     ToolItem: typeof import('./components/Tool/ToolItem.vue')['default']
     ToolsAdmin: typeof import('./components/Tool/ToolsAdmin.vue')['default']
+    ToolUserItem: typeof import('./components/Tool/ToolUserItem.vue')['default']
   }
 }
