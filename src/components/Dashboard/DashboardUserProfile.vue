@@ -72,9 +72,7 @@
             :disabled="!editMode"
             size="large"
             v-model="darkMode"
-            inline-prompt
-            :active-icon="Sunny"
-            :inactive-icon="Moon"
+            inline-promp
           />
         </el-col>
         <el-col :span="10" class="px-2 mt-3 flex">
@@ -84,13 +82,11 @@
             size="large"
             v-model="isPrivate"
             inline-prompt
-            :active-icon="Lock"
-            :inactive-icon="Unlock"
           />
         </el-col>
         <el-col :span="4" class="px-2 mt-3 flex justify-end">
           <el-button v-if="!editMode" type="info" class="ml-auto" @click="editMode = true"> Edit </el-button>
-          <el-button v-else type="primary" class="ml-auto" @click="editMode = false"> Save </el-button>
+          <el-button v-else type="primary" class="ml-auto" @click="updateProfile"> Save </el-button>
         </el-col>
       </el-row>
     </el-col>
@@ -101,7 +97,6 @@
 import { computed, onMounted } from 'vue';
 import authStore from '@/store/auth';
 import UsersApi from '@/api/modules/user';
-import { Sunny, Moon, Lock, Unlock } from '@element-plus/icons-vue';
 import type { UploadProps, UploadUserFile } from 'element-plus';
 const auth = authStore();
 const editMode = ref(false);
@@ -125,7 +120,7 @@ const isPrivateText = computed(() => {
 });
 const handleChange: UploadProps['onChange'] = async (uploadFile, uploadFiles) => {
   loading.value = true;
-  let formData = new FormData();
+  const formData = new FormData();
   //@ts-ignore
   formData.append('files', uploadFile.raw);
   const res = await UsersApi.uploadAvatar(formData);
@@ -134,6 +129,18 @@ const handleChange: UploadProps['onChange'] = async (uploadFile, uploadFiles) =>
 
   loading.value = false;
 };
+
+const updateProfile = async () => {
+  const settings = {
+    darkMode: darkMode.value,
+    private: isPrivate.value,
+    language: language.value,
+    linkedin: linkedin.value,
+    github: github.value
+  }
+  await UsersApi.updateUserSettings(settings)
+  editMode.value = false;
+}
 onMounted(async () => {
   const res = await UsersApi.getUserSettings();
   darkMode.value = res.darkMode;

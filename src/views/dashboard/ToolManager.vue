@@ -60,7 +60,7 @@
           </el-col>
 
           <el-col :span="24" class="admin-card">
-            <el-row :gutter="20" class="mt-15">
+            <el-row :gutter="15" class="mt-15">
               <ToolsAdmin v-for="tool in tools" :key="tool.name" :tool-item="tool" />
             </el-row>
           </el-col>
@@ -78,6 +78,7 @@ import { ref, onMounted } from 'vue';
 import type { Ref } from 'vue';
 import type { FormInstance } from 'element-plus';
 import ToolsApi from '@/api/modules/tools';
+
 const ruleFormRef = ref<FormInstance>();
 interface CreateToolForm {
   name?: string;
@@ -174,11 +175,12 @@ onMounted(async () => {
 }
 .admin-card {
   height: calc(100vh - 400px);
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .admin-card::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
 }
 
 .admin-card::-webkit-scrollbar-track {

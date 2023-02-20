@@ -34,9 +34,7 @@
       </el-button>
     </el-col>
     <el-col :span="24">
-      <p v-for="tool in userTools" :key="tool.id">
-        {{ tool }}
-      </p>
+      <tool-user-item v-for="tool in userTools" :key="tool.id" :tool-item="tool" />
     </el-col>
   </el-row>
 </template>
@@ -78,16 +76,16 @@ const handleSubmit = async () => {
     return;
   }
   // TODO: After user creates, have a way to display new tool
-  await ToolsApi.createUserTool({ experience: expSelect.value }, toolId.value);
-
+  const res = await ToolsApi.createUserTool({ experience: expSelect.value }, toolId.value);
+  userTools.value.push(res.data);
   toolSelect.value = '';
   expSelect.value = '';
   toolId.value = '';
 };
 const getAllTools = async () => {
   const res = await ToolsApi.getTools();
-  let items: ToolApi[] = [];
-  for (let i of res) {
+  const items: ToolApi[] = [];
+  for (const i of res) {
     const obj = { value: '', id: '' };
     obj.value = i.name;
     obj.id = i.id;
