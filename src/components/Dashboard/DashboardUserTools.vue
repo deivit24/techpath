@@ -52,16 +52,18 @@ const expSelect = ref('');
 const toolId = ref('');
 const userTools = ref<UserToolApi[]>([]);
 const tools = ref<ToolApi[]>([]);
-const querySearch = (queryString: string, cb: any) => {
-  const results = queryString ? tools.value.filter(createFilter(queryString)) : tools.value;
-  // call callback function to return suggestions
-  cb(results);
-};
+
 const createFilter = (queryString: string) => {
   return (tools: ToolApi) => {
     return tools.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
   };
 };
+const querySearch = (queryString: string, cb: any) => {
+  const results = queryString ? tools.value.filter(createFilter(queryString)) : tools.value;
+  // call callback function to return suggestions
+  cb(results);
+};
+
 const getUserTools = async () => {
   return await ToolsApi.getUserTools();
 };

@@ -51,6 +51,37 @@
             <el-option v-for="item in ['ENGLISH', 'SPANISH']" :label="item" :value="item" />
           </el-select>
         </el-col>
+        <el-col :span="8" class="px-2 mt-3">
+          <el-input :readonly="!editMode" v-model="firstName" placeholder="First Name">
+            <template #prefix>
+              <el-icon class="el-input__icon"> <i-carbon:identification /> </el-icon>
+            </template>
+          </el-input>
+        </el-col>
+        <el-col :span="8" class="px-2 mt-3">
+          <el-input :readonly="!editMode" v-model="lastName" label="Last Name" placeholder="Last Name">
+            <template #prefix>
+              <el-icon class="el-input__icon"> <i-carbon:identification /> </el-icon>
+            </template>
+          </el-input>
+        </el-col>
+        <el-col :span="8" class="px-2 mt-3">
+          <el-select
+            :disabled="!editMode"
+            v-model="learningMethod"
+            clearable
+            placeholder="Learning Method"
+            class="w-1/1"
+          >
+            <template #prefix>
+              <el-icon class="el-input__icon"> <i-carbon-tools></i-carbon-tools> </el-icon>
+            </template>
+            <el-option v-for="item in learningMethods" :label="item" :value="item" />
+          </el-select>
+        </el-col>
+        <el-col :span="24" class="px-2 mt-3">
+          <el-input :readonly="!editMode" type="textarea" v-model="bio" placeholder="Bio"> </el-input>
+        </el-col>
         <el-col :span="12" class="px-2 mt-3">
           <el-input :readonly="!editMode" v-model="github" placeholder="Github URL">
             <template #prefix>
@@ -65,26 +96,35 @@
             </template>
           </el-input>
         </el-col>
-
-        <el-col :span="10" class="px-2 mt-3 flex">
+        <el-col :span="12" class="px-2 mt-3">
+          <el-input :readonly="!editMode" v-model="currentTitle" placeholder="Current Title">
+            <template #prefix>
+              <el-icon class="el-input__icon"> <i-carbon-industry></i-carbon-industry> </el-icon>
+            </template>
+          </el-input>
+        </el-col>
+        <el-col :span="12" class="px-2 mt-3">
+          <el-input :readonly="!editMode" v-model="currentCompensation" type="number" placeholder="Current Compesation">
+            <template #prefix>
+              <el-icon class="el-input__icon"> <i-carbon-currency></i-carbon-currency> </el-icon>
+            </template>
+          </el-input>
+        </el-col>
+        <el-col :span="6" class="px-2 mt-3 flex">
           <p class="font-serif text-sm mr-2 mt-2">{{ darkModeText }}</p>
-          <el-switch
-            :disabled="!editMode"
-            size="large"
-            v-model="darkMode"
-            inline-promp
-          />
+          <el-switch :disabled="!editMode" size="large" v-model="darkMode" inline-promp />
         </el-col>
-        <el-col :span="10" class="px-2 mt-3 flex">
+        <el-col :span="6" class="px-2 mt-3 flex">
           <p class="font-serif text-sm mr-2 mt-2">{{ isPrivateText }}</p>
-          <el-switch
-            :disabled="!editMode"
-            size="large"
-            v-model="isPrivate"
-            inline-prompt
-          />
+          <el-switch :disabled="!editMode" size="large" v-model="isPrivate" inline-prompt />
         </el-col>
-        <el-col :span="4" class="px-2 mt-3 flex justify-end">
+        <el-col :span="6" class="px-2 mt-3 flex">
+          <el-checkbox :disabled="!editMode" v-model="student">Student</el-checkbox>
+        </el-col>
+        <el-col :span="6" class="px-2 mt-3 flex">
+          <el-checkbox :disabled="!editMode" v-model="employed">Employed</el-checkbox>
+        </el-col>
+        <el-col :span="24" class="px-2 mt-3 flex justify-end">
           <el-button v-if="!editMode" type="info" class="ml-auto" @click="editMode = true"> Edit </el-button>
           <el-button v-else type="primary" class="ml-auto" @click="updateProfile"> Save </el-button>
         </el-col>
@@ -98,12 +138,21 @@ import { computed, onMounted } from 'vue';
 import authStore from '@/store/auth';
 import UsersApi from '@/api/modules/user';
 import type { UploadProps, UploadUserFile } from 'element-plus';
+
 const auth = authStore();
 const editMode = ref(false);
 const loading = ref(false);
 const darkMode = ref(false);
 const isPrivate = ref(false);
+const bio = ref('');
+const student = ref(false);
+const employed = ref(false);
+const currentTitle = ref('');
+const currentCompensation = ref(0);
 const username = ref('');
+const firstName = ref('');
+const lastName = ref('');
+const learningMethod = ref('');
 const language = ref('ENGLISH');
 const github = ref('');
 const linkedin = ref('');
@@ -111,7 +160,7 @@ const email = ref('');
 const avatar = computed(() => {
   return auth.getUserAvatar ? auth.getUserAvatar : '';
 });
-
+const learningMethods = ['C.S. Degree', 'Bootcamp', 'Self-taught', 'Online Paid Courses'];
 const darkModeText = computed(() => {
   return darkMode.value ? 'Dark Mode' : 'Light Mode';
 });
@@ -136,16 +185,33 @@ const updateProfile = async () => {
     private: isPrivate.value,
     language: language.value,
     linkedin: linkedin.value,
-    github: github.value
-  }
-  await UsersApi.updateUserSettings(settings)
+    github: github.value,
+    firstName: firstName.value,
+    lastName: lastName.value,
+    student: student.value,
+    employed: employed.value,
+    currentCompensation: currentCompensation.value,
+    currentTitle: currentTitle.value,
+    bio: bio.value,
+    learningMethod: learningMethod.value,
+  };
+
+  await UsersApi.updateUserSettings(settings);
   editMode.value = false;
-}
+};
 onMounted(async () => {
   const res = await UsersApi.getUserSettings();
   darkMode.value = res.darkMode;
   isPrivate.value = res.private;
   language.value = res.language;
+  firstName.value = res.firstName;
+  bio.value = res.bio;
+  student.value = res.student;
+  employed.value = res.employed;
+  lastName.value = res.lastName;
+  learningMethod.value = res.learningMethod;
+  currentCompensation.value = res.currentCompensation;
+  currentTitle.value = res.currentTitle;
   email.value = auth.getUser?.email ? auth.getUser?.email : '';
   username.value = auth.getUser?.name ? auth.getUser?.name : '';
   github.value = res.github ? res.github : '';

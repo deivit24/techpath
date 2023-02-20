@@ -64,9 +64,10 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import dialoglStore from '@/store/dialogs';
 import type { FormInstance } from 'element-plus';
+import dialoglStore from '@/store/dialogs';
 import ToolsApi from '@/api/modules/tools';
+
 const ruleFormRef = ref<FormInstance>();
 interface CreatToolForm {
   name?: string;
@@ -171,6 +172,7 @@ watch(toolId, async (value) => {
     ruleForm.name = res.name;
     ruleForm.imageUrl = res.imageUrl;
     ruleForm.type = res.type;
+    ruleForm.link = res.link;
     if (res.description) ruleForm.description = res.description;
     if (res.color) ruleForm.color = res.color;
   }

@@ -53,7 +53,7 @@
                   </div>
                 </el-col>
                 <el-col :span="8">
-                  <ToolFileUpload class="mt-9 p-2" @add-image="addImage" />
+                  <ToolFileUpload class="mt-9 p-2" @add-image="addImage" :key="updateKey" />
                 </el-col>
               </el-row>
             </el-card>
@@ -95,6 +95,7 @@ const ruleForm: CreateToolForm = reactive({
   type: [],
 });
 const tools: Ref<Array<CreateToolForm>> = ref([]);
+const updateKey = ref(1);
 const options = [
   {
     value: 'FRONTEND',
@@ -150,6 +151,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       await ToolsApi.createTool(ruleForm);
       ElMessage.success('Successfully created a tool');
       resetForm(formEl);
+      updateKey.value += 1;
     } else {
       alert('error submit!');
       return false;
@@ -164,7 +166,6 @@ const resetForm = (formEl: FormInstance | undefined) => {
 
 onMounted(async () => {
   const res = await ToolsApi.getTools();
-
   tools.value = res;
 });
 </script>
