@@ -3,7 +3,7 @@
     <el-col :span="4">
       <el-image
         style="width: 50px; height: 50px"
-        :src="$props.toolItem.tool.imageUrl"
+        :src="$props.toolItem.tool?.imageUrl"
         :zoom-rate="1.2"
         :initial-index="4"
         fit="cover"
@@ -13,7 +13,7 @@
       <el-progress
         class="mt-4"
         :text-inside="false"
-        :color="$props.toolItem.tool.color"
+        :color="$props.toolItem.tool?.color"
         :stroke-width="20"
         :percentage="percentage"
       >
