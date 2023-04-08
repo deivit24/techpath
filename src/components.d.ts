@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     CalculateDialog: typeof import('./components/Dialog/CalculateDialog.vue')['default']
+    DashboardCareer: typeof import('./components/Dashboard/DashboardCareer.vue')['default']
     DashboardUserProfile: typeof import('./components/Dashboard/DashboardUserProfile.vue')['default']
     DashboardUserTools: typeof import('./components/Dashboard/DashboardUserTools.vue')['default']
     EditToolDialog: typeof import('./components/Dialog/EditToolDialog.vue')['default']
