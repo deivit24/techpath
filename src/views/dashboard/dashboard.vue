@@ -9,7 +9,7 @@
       <el-tab-pane label="Tools">
         <DashboardUserTools />
       </el-tab-pane>
-      <el-tab-pane label="Career Analyst">Career Analyst</el-tab-pane>
+      <el-tab-pane label="Career Analyst"><DashboardCareer /></el-tab-pane>
       <el-tab-pane label="Profile"><DashboardUserProfile /></el-tab-pane>
     </el-tabs>
   </div>
