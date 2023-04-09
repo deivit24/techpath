@@ -46,15 +46,15 @@ const calculateFrontend = (tools: Array<Tool>) => {
     }
   }
 
-  const uiScore = calculateWeightedCategoryScore(uiYears, 0.1)
-  const langScore = calculateWeightedCategoryScore(langYears, 0.3)
-  const frameworkScore = calculateWeightedCategoryScore(frameworkYears, 0.2)
+  const uiScore = calculateWeightedCategoryScore(uiYears, 0.1);
+  const langScore = calculateWeightedCategoryScore(langYears, 0.3);
+  const frameworkScore = calculateWeightedCategoryScore(frameworkYears, 0.2);
 
   const uiWA = weightedAverageScore(uiScore, UIWEIGHT);
   const langWA = weightedAverageScore(langScore, FRONTENDLANGUAGEWEIGHT);
   const frameworkWA = weightedAverageScore(frameworkScore, FRAMEWORKWEIGHT);
 
-  return uiWA + langWA + frameworkWA
+  return uiWA + langWA + frameworkWA;
 };
 
 const calculateBackend = (tools: Array<Tool>) => {
@@ -72,9 +72,9 @@ const calculateBackend = (tools: Array<Tool>) => {
     }
   }
 
-  const langScore = calculateWeightedCategoryScore(langYears, 0.3)
-  const dbScore = calculateWeightedCategoryScore(dbYears, 0.2)
-  const frameworkScore = calculateWeightedCategoryScore(frameworkYears, 0.1)
+  const langScore = calculateWeightedCategoryScore(langYears, 0.3);
+  const dbScore = calculateWeightedCategoryScore(dbYears, 0.2);
+  const frameworkScore = calculateWeightedCategoryScore(frameworkYears, 0.1);
 
   const dbWA = weightedAverageScore(dbScore, DBWEIGHT);
   const langWA = weightedAverageScore(langScore, BACKENDLANGUAGEWEIGHT);
@@ -159,22 +159,59 @@ const getSum = (arr: number[]): number => {
 };
 
 const calculateWeightedCategoryScore = (scores: number[], weight: number): number => {
-    let langScore: number = 0;
-    if (scores.length === 0) {
-        langScore = 0;
-    } else if (scores.length === 1) {
-        langScore = getAverage(scores);
-    } else {
-        scores.sort((a, b) => a - b);
-        let maxScore = scores[scores.length - 1];
-        let otherScores = scores.slice(0, scores.length - 1);
-        const otherScoresWeight = otherScores.map((score) => score * weight);
-        const otherScoresWeightedAvergage = getSum(otherScoresWeight);
+  let langScore: number = 0;
+  if (scores.length === 0) {
+    langScore = 0;
+  } else if (scores.length === 1) {
+    langScore = getAverage(scores);
+  } else {
+    scores.sort((a, b) => a - b);
+    let maxScore = scores[scores.length - 1];
+    let otherScores = scores.slice(0, scores.length - 1);
+    const otherScoresWeight = otherScores.map((score) => score * weight);
+    const otherScoresWeightedAvergage = getSum(otherScoresWeight);
 
-        let totalScore = maxScore + otherScoresWeightedAvergage;
-        if (totalScore >= 100) langScore = 100;
-        else langScore = totalScore;
+    let totalScore = maxScore + otherScoresWeightedAvergage;
+    if (totalScore >= 100) langScore = 100;
+    else langScore = totalScore;
+  }
+  return langScore;
+};
+
+const showJob = (score: number, type: string) => {
+  if (score === 0) return '';
+  if (type !== 'DevOps') {
+    if (score < 20) {
+      return `Junior ${type} Software Engineer (SE I)`;
+    } else if (score < 40) {
+      return `${type} Software Engineer (SE II)`;
+    } else if (score < 60) {
+      return `Senior ${type} Software Engineer (SE III)`;
+    } else if (score < 70) {
+      return `Tech Lead (${type})`;
+    } else if (score < 80) {
+      return `Staff Engineer (${type}) or Engineering Lead`;
+    } else if (score < 90) {
+      return `Senior Staff Engineer (${type}) or Engineering Director`;
+    } else {
+      return `Chief Architect (Principal) (${type}) or VP Director`;
     }
-    return langScore;
-}
-export { calculateFrontend, calculateBackend, calculateFullStack, calculateDevOps };
+  } else {
+    if (score < 20) {
+      return `Junior ${type} Engineer`;
+    } else if (score < 40) {
+      return `${type} Engineer`;
+    } else if (score < 60) {
+      return `Senior ${type} Engineer`;
+    } else if (score < 70) {
+      return `Tech Lead (${type})`;
+    } else if (score < 80) {
+      return `Staff (${type}) Engineer or DevOps Lead`;
+    } else if (score < 90) {
+      return `Senior Staff (${type}) Engineer or Engineering Director`;
+    } else {
+      return `Chief Architect (Principal) (${type}) or VP Director`;
+    }
+  }
+};
+export { calculateFrontend, calculateBackend, calculateFullStack, calculateDevOps, showJob };

@@ -1,13 +1,10 @@
 <template>
   <el-dialog v-model="props.dialog" :title="props.title" :close-on-click-modal="false" :show-close="false">
-    <h1 class="font-serif font-bold mb-2 text-xl text-center">Frontend Score: {{ frontend }}Pts</h1>
-    <p class="text-center mb-5">{{ showJob(frontend, 'Frontend') }}</p>
-    <h1 class="font-serif font-bold mb-2 text-xl text-center">Backend Score: {{ backend }} Pts</h1>
-    <p class="text-center mb-5">{{ showJob(backend, 'Backend') }}</p>
-    <h1 class="font-serif font-bold mb-2 text-xl text-center">Fullstack Score: {{ fullstack }} Pts</h1>
-    <p class="text-center mb-5">{{ showJob(fullstack, 'Fullstack') }}</p>
-    <h1 class="font-serif font-bold mb-2 text-xl text-center">DevOps Score: {{ devops }} Pts</h1>
-    <p class="text-center mb-5">{{ showJob(devops, 'DevOps') }}</p>
+    <h1 class="font-serif font-bold mb-2 text-xl">Possible Job Titles</h1>
+    <p class="mb-5">{{ showJob(frontend, 'Frontend') }}</p>
+    <p class="mb-5">{{ showJob(backend, 'Backend') }}</p>
+    <p class="mb-5">{{ showJob(fullstack, 'Fullstack') }}</p>
+    <p class="mb-5">{{ showJob(devops, 'DevOps') }}</p>
     <PolarAreaChart v-bind="polarAreaChartProps" />
     <template #footer>
       <span class="dialog-footer">
@@ -22,7 +19,13 @@
 import { isDark } from '@/utils/dark';
 import { Tool } from '@/types';
 import { ref, computed, defineComponent } from 'vue';
-import { calculateFrontend, calculateBackend, calculateFullStack, calculateDevOps } from '../../utils/calculations';
+import {
+  calculateFrontend,
+  calculateBackend,
+  calculateFullStack,
+  calculateDevOps,
+  showJob,
+} from '../../utils/calculations';
 import { PolarAreaChart, usePolarAreaChart } from 'vue-chart-3';
 import { Chart, ChartOptions, registerables, RadialLinearScale, ArcElement, Tooltip, Legend } from 'chart.js';
 import toolStore from '@/store/tool';
@@ -64,7 +67,7 @@ const options = computed<ChartOptions<'polarArea'>>(() => ({
         color: isDark.value ? 'white' : 'grey',
       },
       ticks: {
-        stepSize: 10,
+        stepSize: 20,
         count: 10,
         font: {
           size: 16,
@@ -72,14 +75,30 @@ const options = computed<ChartOptions<'polarArea'>>(() => ({
         color: isDark.value ? 'white' : 'black',
         backdropColor: isDark.value ? 'black' : 'white',
       },
+      pointLabels: {
+        display: true,
+        centerPointLabels: true,
+        font: {
+          size: 18,
+        },
+      },
     },
   },
   responsive: true,
-  maintainAspectRatio: false,
   plugins: {
+    legend: {
+      position: 'top',
+      labels: {
+        color: isDark.value ? 'white' : 'grey',
+      },
+    },
     title: {
-      display: true,
+      display: false,
+      font: {
+        size: 20,
+      },
       text: 'Tech Path Chart',
+      color: isDark.value ? 'white' : 'grey',
     },
   },
 }));
@@ -89,24 +108,6 @@ const { polarAreaChartProps } = usePolarAreaChart({
   options,
 });
 
-const showJob = (score: number, type: string) => {
-  if (score === 0) return 'N/A';
-  if (score < 20) {
-    return `Junior ${type} Software Engineer (SE I)`;
-  } else if (score < 40) {
-    return `${type} Software Engineer (SE II)`;
-  } else if (score < 60) {
-    return `Senior ${type} Software Engineer (SE III)`;
-  } else if (score < 70) {
-    return `Tech Lead (${type})`;
-  } else if (score < 80) {
-    return `Staff Engineer (${type}) or Engineering Lead`;
-  } else if (score < 90) {
-    return `Senior Staff Engineer (${type}) or Engineering Director`;
-  } else {
-    return `Chief Architect (Principal) (${type}) or VP Director`;
-  }
-};
 watch(
   () => props.dialog,
   (val) => {
