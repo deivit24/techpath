@@ -113,13 +113,18 @@ const { polarAreaChartProps } = usePolarAreaChart({
   options,
 });
 const getCareerMetrics = async () => {
-  return await CareerApi.getCareerMetrics();
+  const res = await CareerApi.getCareerMetrics();
+  frontend.value = res.frontend;
+  backend.value = res.backend;
+  fullstack.value = res.fullstack;
+  devops.value = res.devops;
 };
 onMounted(async () => {
-  const metrics = await getCareerMetrics();
-  frontend.value = metrics.frontend;
-  backend.value = metrics.backend;
-  fullstack.value = metrics.fullstack;
-  devops.value = metrics.devops;
+  await getCareerMetrics();
 });
+
+// onUpdated(async () => {
+//   // text content should be the same as current `count.value`
+//   await getCareerMetrics();
+// });
 </script>
