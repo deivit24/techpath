@@ -34,7 +34,7 @@
       </el-button>
     </el-col>
     <el-col :span="24">
-      <tool-user-item v-for="tool in userTools" :key="tool.id" :tool-item="tool" />
+      <tool-user-item v-for="tool in userTools" @remove-item="removeTool" :key="tool.id" :tool-item="tool" />
     </el-col>
   </el-row>
 </template>
@@ -98,6 +98,11 @@ const getAllTools = async () => {
 const handleSelect = (tool: any) => {
   toolId.value = tool.id;
 };
+
+const removeTool = (toolId: string) => {
+  userTools.value = userTools.value.filter((ut) => ut.id != toolId);
+};
+
 onMounted(async () => {
   userTools.value = await getUserTools();
   tools.value = await getAllTools();
